@@ -15,12 +15,12 @@ appUpload = function(url, ele, callback) {
 				if (/^image\//i.test(file.type)) {
 					readFile(file);
 				} else {
-					uk.alert('您选择的不是图片', '', function() {});
+					alert("您选择的不是图片");
 				}
 			}
 		});
 	} else {
-		uk.alert('对不起，您的设备暂不支持!', '', function() {});
+		alert("您的设备暂不支持!");
 	}
 
 	function readFile(file) {
@@ -29,7 +29,7 @@ appUpload = function(url, ele, callback) {
 			processFile(reader.result, file.type);
 		}
 		reader.onerror = function () {
-			uk.alert('对不起，图片上传出错!', '', function() {});
+			alert('图片上传出错');
 		}
 		reader.readAsDataURL(file);
 	}
@@ -65,16 +65,17 @@ appUpload = function(url, ele, callback) {
 			sendFile(dataURL, fileType);
 		};
 		image.onerror = function () {
-			uk.alert('对不起，图片上传出错!', '', function() {});
+			alert('图片上传出错');
 		};
 	};
 	function sendFile(fileData, fileType) {
 		// var formData = new FormData();
 		// formData.append('formData', fileData);
+		// 这里可以按照后端接收修改
 		fileType = fileType.split('image/')[1];
 		var formData = {};
 		formData[fileType] = fileData.split(';base64,')[1];
-		UKunit.ajax({
+		$.ajax({
 			type: 'POST',
 			url: url,
 			data: JSON.stringify(formData),
@@ -82,7 +83,7 @@ appUpload = function(url, ele, callback) {
 				if (data.status == 'success') {
 					callback && callback(data);
 				} else {
-					uk.nyTip(data.message || '对不起，图片上传出错', 1.5, 'error');
+					alert('图片上传出错');
 				}
 			}
 		});
